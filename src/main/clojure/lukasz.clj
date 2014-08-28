@@ -1,6 +1,6 @@
-(ns main
+(ns lukasz
   (:gen-class 
-    :name main
+    :name lukasz
     :methods [#^{:static true} [aplusb [int int] int]]))
 
 (defn aplusb
