@@ -1,4 +1,4 @@
-(ns lukasz
+(ns pierwszy.lukasz
   (:gen-class 
     :name lukasz
     :methods [#^{:static true} [aplusb [int int] int]]))

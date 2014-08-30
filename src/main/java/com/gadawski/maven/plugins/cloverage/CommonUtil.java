@@ -1,4 +1,4 @@
-package com.gadawski.maven.plugins;
+package com.gadawski.maven.plugins.cloverage;
 
 import java.io.BufferedReader;
 import java.io.File;
