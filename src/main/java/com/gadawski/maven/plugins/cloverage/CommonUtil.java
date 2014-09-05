@@ -26,7 +26,6 @@ public class CommonUtil {
             }
             reader.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -35,7 +34,6 @@ public class CommonUtil {
         RT.loadResourceScript("clojure/data.clj");
         Var test = RT.var("clojure.data", "diff");
         Object testresult = test.invoke(1, 2);
-        System.out.println("####Test result: " + testresult);
     }
 
     public static void executeClojurePrintTest() throws IOException {

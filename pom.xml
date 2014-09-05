@@ -23,6 +23,7 @@
 			<groupId>cloverage</groupId>
 			<artifactId>cloverage</artifactId>
 			<version>1.0.4</version>
+			<type>maven-plugin</type>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -41,24 +42,23 @@
 			<version>3.3</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-project</artifactId>
+			<version>3.0-alpha-2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-model</artifactId>
+			<version>${maven.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-core</artifactId>
+			<version>3.0</version>
+		</dependency>
 	</dependencies>
 	<build>
-		<resources>
-		<!-- brak ponizszej konfiguracji powoduje IAE exception poniewaz 
-				nie moga zostac odnalezione przekazane w parametrze zrodla -->
-			<resource>
-				<directory>src/main/clojure</directory>
-			</resource>
-			<resource>
-				<directory>src/test/clojure</directory>
-			</resource>
-			<resource>
-				<directory>src/main/clojure</directory>
-			</resource>
-			<resource>
-				<directory>src/test/clojure</directory>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -5,6 +5,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 
 import com.gadawski.maven.plugins.cloverage.ClojureExecutor;
+import com.gadawski.maven.plugins.cloverage.ClojureExecutorImpl;
 
 /**
  * @author l.gadawski@gmail.com
@@ -16,7 +17,7 @@ public class ClojureUtilsMojo extends AbstractMojo {
     private ClojureExecutor clojureExecutor;
 
     public void execute() throws MojoExecutionException {
-        clojureExecutor = new ClojureExecutor(getLog());
+        clojureExecutor = new ClojureExecutorImpl(getLog());
         clojureExecutor.executeCloverage("-x", "mikera.cljutils.test-arrays", "mikera.cljutils.arrays");
     }
 }
