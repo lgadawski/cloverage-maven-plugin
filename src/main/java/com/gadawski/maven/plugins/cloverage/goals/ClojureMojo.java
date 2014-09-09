@@ -25,6 +25,7 @@ public class ClojureMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException {
         ClassLoaderUtil.setContextClassLoader(project);
         clojureExecutor = new ClojureExecutorImpl(getLog());
+        clojureExecutor.getClasspath();
         clojureExecutor.executeCloverage("-x", "clojure.test-clojure.data", "clojure.data");
     }
 }

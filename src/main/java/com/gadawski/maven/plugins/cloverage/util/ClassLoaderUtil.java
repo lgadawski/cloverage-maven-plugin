@@ -16,14 +16,18 @@ import org.apache.maven.project.MavenProject;
  * @author l.gadawski@gmail.com
  *
  */
-public class ClassLoaderUtil {
+public final class ClassLoaderUtil {
 
     // prevent instantiation
     private ClassLoaderUtil() {
         // empty
     }
 
-    public static void setContextClassLoader(MavenProject project) throws MojoExecutionException {
+    /**
+     * @param project
+     * @throws MojoExecutionException
+     */
+    public static final void setContextClassLoader(MavenProject project) throws MojoExecutionException {
         Set<URL> urls = new HashSet<>();
         List<String> elements;
         try {

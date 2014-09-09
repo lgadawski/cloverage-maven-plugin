@@ -9,11 +9,26 @@ import java.nio.file.Files;
 import clojure.lang.RT;
 import clojure.lang.Var;
 
+/**
+ * Common utility class
+ * 
+ * @author l.gadawski@gmail.com
+ *
+ */
 public class CommonUtil {
+
+    private static final String USER_DIR = "user.dir";
 
     // prevent instantiations
     private CommonUtil() {
         // empty
+    }
+
+    /**
+     * @return project relative path on property "user.dir"
+     */
+    public static String getRelativePathToProject() {
+        return System.getProperty(USER_DIR);
     }
 
     public static void printOutFileContent(File testFile) {
@@ -28,12 +43,6 @@ public class CommonUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void testClojureCoreInvoke() throws IOException {
-        RT.loadResourceScript("clojure/data.clj");
-        Var test = RT.var("clojure.data", "diff");
-        Object testresult = test.invoke(1, 2);
     }
 
     public static void executeClojurePrintTest() throws IOException {

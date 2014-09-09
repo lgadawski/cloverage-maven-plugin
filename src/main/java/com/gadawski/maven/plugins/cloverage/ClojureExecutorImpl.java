@@ -4,20 +4,48 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
 
+import clojure.java.api.Clojure;
+import clojure.lang.IFn;
 import clojure.lang.RT;
-import clojure.lang.Var;
 
+/**
+ * Implementation for {@link ClojureExecutor}
+ * 
+ * @author l.gadawski@gmail.com
+ *
+ */
 public class ClojureExecutorImpl implements ClojureExecutor {
 
     private static final String CLOVERAGE_COVERAGE_CLJ = "cloverage/coverage.clj";
-    private static final String USER_DIR = "user.dir";
+    private static final String CLOVERAGE_NS = "cloverage.coverage";
+    private static final String FUNCTION = "-main";
+
+    private static final String CLOVERAGE_INVOKER_CLJ = "com/gadawski/maven/plugins/cloverage/cloverage_invoker.clj";
+    private static final String CLOVERAGE_INVOKER_NS = "com.gadawski.maven.plugins.cloverage.cloverage_invoker";
+    private static final String CLOVERAGE_INVOKER_FUN = "main";
+
+    // logger
     private final Log log;
 
     public ClojureExecutorImpl(Log log) {
         this.log = log;
+    }
+
+    @Override
+    public void executeCloverageInvoker(List<String> testStrings) {
+        try {
+            RT.loadResourceScript(CLOVERAGE_INVOKER_CLJ);
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error("Error while reading clojure cloverage library file!!");
+            return;
+        }
+        IFn cloverageInvoker = Clojure.var(CLOVERAGE_INVOKER_NS, CLOVERAGE_INVOKER_FUN);
+        cloverageInvoker.invoke(testStrings);
     }
 
     @Override
@@ -26,28 +54,24 @@ public class ClojureExecutorImpl implements ClojureExecutor {
             RT.loadResourceScript(CLOVERAGE_COVERAGE_CLJ);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("### Error while reading clojure file!!");
+            log.error("Error while reading clojure cloverage library file!!");
             return;
         }
-
-        Var coverage = RT.var("cloverage.coverage", "-main");
-
-        String relativePathToProject = System.getProperty(USER_DIR);
-        System.out.println("#Working dir: " + relativePathToProject);
-
-        coverage.invoke(params[0], params[1], params[2]);
+        IFn cloverage = Clojure.var(CLOVERAGE_NS, FUNCTION);
+        // dummy
+        cloverage.invoke(params[0], params[1], params[2]);
     }
 
     @Override
     public void getClasspath() {
-        System.out.println("############ GET CLASSPATH");
+        log.debug("GET CLASSPATH");
         ClassLoader classLoader = this.getClass().getClassLoader();
         Enumeration<URL> roots = null;
         try {
             roots = classLoader.getResources("");
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("### Error while reading resources!!");
+            log.error("Error while reading resources!!");
             return;
         }
         while (roots.hasMoreElements()) {
@@ -66,7 +90,7 @@ public class ClojureExecutorImpl implements ClojureExecutor {
                     printChildren(childFile);
                 }
             } else {
-                log.debug("## FILE_NAME: " + file.getName());
+                log.debug("FILE_NAME: " + file.getName());
             }
         }
     }
