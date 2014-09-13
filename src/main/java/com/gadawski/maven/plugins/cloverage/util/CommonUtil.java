@@ -6,9 +6,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 
-import clojure.lang.RT;
-import clojure.lang.Var;
-
 /**
  * Common utility class
  * 
@@ -32,9 +29,8 @@ public class CommonUtil {
     }
 
     public static void printOutFileContent(File testFile) {
-        Charset charset = Charset.forName("US-ASCII");
         try {
-            BufferedReader reader = Files.newBufferedReader(testFile.toPath(), charset);
+            BufferedReader reader = Files.newBufferedReader(testFile.toPath(), Charset.defaultCharset());
             String line;
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
@@ -45,13 +41,16 @@ public class CommonUtil {
         }
     }
 
-    public static void executeClojurePrintTest() throws IOException {
-        RT.loadResourceScript("lukasz.clj");
-
-        Var foo = RT.var("lukasz", "main");
-
-        Object result = foo.invoke();
-        System.out.println("print clojure result: ");
-        System.out.println(result);
+    public static String getFirstLine(File file) {
+        if (file == null) {
+            return null;
+        }
+        try {
+            BufferedReader reader = Files.newBufferedReader(file.toPath(), Charset.defaultCharset());
+            String line = reader.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot open clojure file!");
+        }
+        return null;
     }
 }

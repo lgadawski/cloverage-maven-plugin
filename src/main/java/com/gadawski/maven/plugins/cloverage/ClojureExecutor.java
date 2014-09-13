@@ -1,5 +1,6 @@
 package com.gadawski.maven.plugins.cloverage;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -22,10 +23,19 @@ public interface ClojureExecutor {
      * 
      * @param params
      */
+    @Deprecated
     void executeCloverage(String... params);
 
     /**
      * 
      */
     void getClasspath();
+
+    /**
+     * Executed tools.namespaces.find-namespace-in-dir
+     * 
+     * @param sourceDirectory
+     * @return
+     */
+    Object executeFindNamespacesInDir(File sourceDirectory);
 }

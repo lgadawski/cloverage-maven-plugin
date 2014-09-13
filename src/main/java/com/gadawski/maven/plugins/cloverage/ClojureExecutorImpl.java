@@ -20,13 +20,17 @@ import clojure.lang.RT;
  */
 public class ClojureExecutorImpl implements ClojureExecutor {
 
+    private static final String READING_CLJ_EXCEPTION_MSG = "Error while reading clojure cloverage library file!!";
+    
     private static final String CLOVERAGE_COVERAGE_CLJ = "cloverage/coverage.clj";
     private static final String CLOVERAGE_NS = "cloverage.coverage";
-    private static final String FUNCTION = "-main";
+    private static final String CLOVERAGE_FUN = "-main";
 
-    private static final String CLOVERAGE_INVOKER_CLJ = "com/gadawski/maven/plugins/cloverage/cloverage_invoker.clj";
-    private static final String CLOVERAGE_INVOKER_NS = "com.gadawski.maven.plugins.cloverage.cloverage_invoker";
-    private static final String CLOVERAGE_INVOKER_FUN = "main";
+    private static final String CLOJURE_INVOKER_CLJ = "com/gadawski/maven/plugins/cloverage/clojure_invoker.clj";
+    private static final String CLOJURE_INVOKER_NS = "com.gadawski.maven.plugins.cloverage.clojure_invoker";
+
+    private static final String CLOVERAGE_INVOKER_FUN = "invoke-cloverage";
+    private static final Object FIND_NAMESPACES_IN_DIR_FUN = "find-namespaces-in-dir-string";
 
     // logger
     private final Log log;
@@ -36,16 +40,16 @@ public class ClojureExecutorImpl implements ClojureExecutor {
     }
 
     @Override
-    public void executeCloverageInvoker(List<String> testStrings) {
+    public void executeCloverageInvoker(List<String> params) {
         try {
-            RT.loadResourceScript(CLOVERAGE_INVOKER_CLJ);
+            RT.loadResourceScript(CLOJURE_INVOKER_CLJ);
         } catch (IOException e) {
             e.printStackTrace();
-            log.error("Error while reading clojure cloverage library file!!");
+            log.error(READING_CLJ_EXCEPTION_MSG);
             return;
         }
-        IFn cloverageInvoker = Clojure.var(CLOVERAGE_INVOKER_NS, CLOVERAGE_INVOKER_FUN);
-        cloverageInvoker.invoke(testStrings);
+        IFn cloverageInvoker = Clojure.var(CLOJURE_INVOKER_NS, CLOVERAGE_INVOKER_FUN);
+        cloverageInvoker.invoke(params);
     }
 
     @Override
@@ -54,12 +58,25 @@ public class ClojureExecutorImpl implements ClojureExecutor {
             RT.loadResourceScript(CLOVERAGE_COVERAGE_CLJ);
         } catch (IOException e) {
             e.printStackTrace();
-            log.error("Error while reading clojure cloverage library file!!");
+            log.error(READING_CLJ_EXCEPTION_MSG);
             return;
         }
-        IFn cloverage = Clojure.var(CLOVERAGE_NS, FUNCTION);
+        IFn cloverage = Clojure.var(CLOVERAGE_NS, CLOVERAGE_FUN);
         // dummy
         cloverage.invoke(params[0], params[1], params[2]);
+    }
+
+    @Override
+    public Object executeFindNamespacesInDir(File directory) {
+        try {
+            RT.loadResourceScript(CLOJURE_INVOKER_CLJ);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(READING_CLJ_EXCEPTION_MSG);
+            return null;
+        }
+        IFn findNamespaceInDir = Clojure.var(CLOJURE_INVOKER_NS, FIND_NAMESPACES_IN_DIR_FUN);
+        return findNamespaceInDir.invoke(directory);
     }
 
     @Override
