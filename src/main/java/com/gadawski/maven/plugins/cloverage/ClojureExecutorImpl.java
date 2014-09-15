@@ -88,7 +88,7 @@ public class ClojureExecutorImpl implements ClojureExecutor {
             roots = classLoader.getResources("");
         } catch (IOException e) {
             e.printStackTrace();
-            log.error("Error while reading resources!!");
+            log.error(READING_CLJ_EXCEPTION_MSG);
             return;
         }
         while (roots.hasMoreElements()) {

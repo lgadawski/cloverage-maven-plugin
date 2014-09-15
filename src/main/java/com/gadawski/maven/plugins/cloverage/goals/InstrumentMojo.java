@@ -9,7 +9,6 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.sonatype.inject.Parameters;
 
 import com.gadawski.maven.plugins.cloverage.ClojureExecutor;
 import com.gadawski.maven.plugins.cloverage.ClojureExecutorImpl;
@@ -34,10 +33,10 @@ public class InstrumentMojo extends AbstractMojo {
     @Parameter(name = "test.source.directory")
     private File testSrcDirCljs;
 
-//    @Parameter( = "${project.build.srcDirClj}")
+//    @Parameter
 //    private String srcDirClj;
 //
-//    @Parameters
+//    @Parameter
 //    private String testSrcDirClj;
 
     /**

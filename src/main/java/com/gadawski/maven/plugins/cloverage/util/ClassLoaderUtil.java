@@ -28,6 +28,7 @@ public final class ClassLoaderUtil {
      * @param project
      * @throws MojoExecutionException
      */
+    @SuppressWarnings("unchecked")
     public static final void setContextClassLoader(MavenProject project) throws MojoExecutionException {
         Set<URL> urls = Sets.newHashSet();
         List<String> elements;
