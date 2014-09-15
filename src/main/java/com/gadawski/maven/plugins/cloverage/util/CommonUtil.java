@@ -40,17 +40,4 @@ public class CommonUtil {
             e.printStackTrace();
         }
     }
-
-    public static String getFirstLine(File file) {
-        if (file == null) {
-            return null;
-        }
-        try {
-            BufferedReader reader = Files.newBufferedReader(file.toPath(), Charset.defaultCharset());
-            String line = reader.readLine();
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot open clojure file!");
-        }
-        return null;
-    }
 }
