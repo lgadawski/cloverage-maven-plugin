@@ -1,0 +1,15 @@
+<project name="Cloverage Maven Plugin">
+    <skin>
+		<groupId>lt.velykis.maven.skins</groupId>
+		<artifactId>reflow-maven-skin</artifactId>
+		<version>1.1.1</version>
+  </skin>
+  <custom>
+	<reflowSkin>
+		<theme>bootswatch-united</theme>
+	</reflowSkin>
+  </custom>
+  <body>
+    ${reports}
+  </body>
+</project>
