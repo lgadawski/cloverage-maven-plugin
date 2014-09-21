@@ -30,14 +30,14 @@ public class InstrumentMojo extends AbstractMojo {
     @Parameter(property = "source.directory")
     private File srcDirCljs;
 
-    @Parameter(name = "test.source.directory")
+    @Parameter(property = "source.test.directory")
     private File testSrcDirCljs;
 
-//    @Parameter
-//    private String srcDirClj;
-//
-//    @Parameter
-//    private String testSrcDirClj;
+    @Parameter
+    private String srcDirClj;
+
+    @Parameter
+    private String testSrcDirClj;
 
     /**
      * Executor for cloverage library.
@@ -48,8 +48,8 @@ public class InstrumentMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         System.out.println(srcDirCljs);
         System.out.println(testSrcDirCljs);
-//        System.out.println(srcDirClj);
-//        System.out.println(testSrcDirClj);
+        System.out.println(srcDirClj);
+        System.out.println(testSrcDirClj);
 
         ClassLoaderUtil.setContextClassLoader(project);
         clojureExecutor = new ClojureExecutorImpl(getLog());
