@@ -7,6 +7,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
+import org.codehaus.plexus.component.annotations.Component;
 
 import clojure.java.api.Clojure;
 import clojure.lang.IFn;
@@ -18,10 +19,11 @@ import clojure.lang.RT;
  * @author l.gadawski@gmail.com
  *
  */
+@Component(role = ClojureExecutor.class, hint = "default", instantiationStrategy = "per-lookup")
 public class ClojureExecutorImpl implements ClojureExecutor {
 
     private static final String READING_CLJ_EXCEPTION_MSG = "Error while reading clojure cloverage library file!!";
-    
+
     private static final String CLOVERAGE_COVERAGE_CLJ = "cloverage/coverage.clj";
     private static final String CLOVERAGE_NS = "cloverage.coverage";
     private static final String CLOVERAGE_FUN = "-main";
