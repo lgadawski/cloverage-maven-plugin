@@ -11,7 +11,6 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import com.gadawski.maven.plugins.cloverage.ClojureExecutor;
-import com.gadawski.maven.plugins.cloverage.ClojureExecutorImpl;
 import com.gadawski.maven.plugins.cloverage.util.ClassLoaderUtil;
 import com.gadawski.maven.plugins.cloverage.util.NamespaceUtil;
 
@@ -27,17 +26,11 @@ public class InstrumentMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject project;
 
-    @Parameter(property = "source.directory")
-    private File srcDirCljs;
-
-    @Parameter(property = "source.test.directory")
-    private File testSrcDirCljs;
+    @Parameter
+    private File clojureSourceDirectory;
 
     @Parameter
-    private String srcDirClj;
-
-    @Parameter
-    private String testSrcDirClj;
+    private File clojureTestSourceDirectory;
 
     /**
      * Executor for cloverage library.
@@ -45,18 +38,19 @@ public class InstrumentMojo extends AbstractMojo {
     @Component(role = ClojureExecutor.class, hint = "default")
     private ClojureExecutor clojureExecutor;
 
+    public InstrumentMojo() {
+        // empty
+    }
+
     @Override
     public void execute() throws MojoExecutionException {
-        System.out.println(srcDirCljs);
-        System.out.println(testSrcDirCljs);
-        System.out.println(srcDirClj);
-        System.out.println(testSrcDirClj);
 
         ClassLoaderUtil.setContextClassLoader(project);
-        clojureExecutor = new ClojureExecutorImpl(getLog());
+//        clojureExecutor = new ClojureExecutorImpl(getLog());
 
-        List<String> clojureProjectNamespaces = NamespaceUtil.getClojureNamespaces(testSrcDirCljs, srcDirCljs);
-        if (!clojureProjectNamespaces.isEmpty()) {
+        List<String> clojureProjectNamespaces = 
+                NamespaceUtil.getClojureNamespaces(clojureTestSourceDirectory, clojureSourceDirectory);
+        if (!clojureProjectNamespaces.isEmpty() && clojureExecutor != null) {
             clojureExecutor.executeCloverageInvoker(clojureProjectNamespaces);
         }
     }

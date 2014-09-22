@@ -79,7 +79,7 @@ public class NamespaceUtil {
      */
     @SuppressWarnings("unchecked")
     private static List<String> getNamespacesInDir(File sourceDirectory) {
-        ClojureExecutorImpl clojureExecutor = new ClojureExecutorImpl(null);
+        ClojureExecutorImpl clojureExecutor = new ClojureExecutorImpl();
         Object sourceNamespaces = clojureExecutor.executeFindNamespacesInDir(sourceDirectory);
         if (sourceNamespaces instanceof Collection<?>) {
             sourceNamespaces = (Collection<?>) sourceNamespaces;

@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 
 import clojure.java.api.Clojure;
 import clojure.lang.IFn;
@@ -19,7 +20,7 @@ import clojure.lang.RT;
  * @author l.gadawski@gmail.com
  *
  */
-@Component(role = ClojureExecutor.class, hint = "default", instantiationStrategy = "per-lookup")
+@Component(role = ClojureExecutor.class, hint = "default")
 public class ClojureExecutorImpl implements ClojureExecutor {
 
     private static final String READING_CLJ_EXCEPTION_MSG = "Error while reading clojure cloverage library file!!";
@@ -34,12 +35,16 @@ public class ClojureExecutorImpl implements ClojureExecutor {
     private static final String CLOVERAGE_INVOKER_FUN = "invoke-cloverage";
     private static final Object FIND_NAMESPACES_IN_DIR_FUN = "find-namespaces-in-dir-string";
 
-    // logger
-    private final Log log;
+    @Requirement
+    private Log log;
 
-    public ClojureExecutorImpl(Log log) {
-        this.log = log;
+    public ClojureExecutorImpl() {
+        // empty
     }
+
+//    public ClojureExecutorImpl(Log log) {
+//        this.log = log;
+//    }
 
     @Override
     public void executeCloverageInvoker(List<String> params) {
@@ -47,7 +52,7 @@ public class ClojureExecutorImpl implements ClojureExecutor {
             RT.loadResourceScript(CLOJURE_INVOKER_CLJ);
         } catch (IOException e) {
             e.printStackTrace();
-            log.error(READING_CLJ_EXCEPTION_MSG);
+            getLog().error(READING_CLJ_EXCEPTION_MSG);
             return;
         }
         IFn cloverageInvoker = Clojure.var(CLOJURE_INVOKER_NS, CLOVERAGE_INVOKER_FUN);
@@ -60,7 +65,7 @@ public class ClojureExecutorImpl implements ClojureExecutor {
             RT.loadResourceScript(CLOVERAGE_COVERAGE_CLJ);
         } catch (IOException e) {
             e.printStackTrace();
-            log.error(READING_CLJ_EXCEPTION_MSG);
+            getLog().error(READING_CLJ_EXCEPTION_MSG);
             return;
         }
         IFn cloverage = Clojure.var(CLOVERAGE_NS, CLOVERAGE_FUN);
@@ -83,34 +88,38 @@ public class ClojureExecutorImpl implements ClojureExecutor {
 
     @Override
     public void getClasspath() {
-        log.debug("GET CLASSPATH");
+        getLog().debug("GET CLASSPATH");
         ClassLoader classLoader = this.getClass().getClassLoader();
         Enumeration<URL> roots = null;
         try {
             roots = classLoader.getResources("");
         } catch (IOException e) {
             e.printStackTrace();
-            log.error(READING_CLJ_EXCEPTION_MSG);
+            getLog().error(READING_CLJ_EXCEPTION_MSG);
             return;
         }
         while (roots.hasMoreElements()) {
             URL url = (URL) roots.nextElement();
-            log.debug("URL: " + url);
+            getLog().debug("URL: " + url);
             File root = new File(url.getPath());
             printChildren(root);
         }
     }
 
     private void printChildren(File root) {
-        log.debug("ROOT: " + root);
+        getLog().debug("ROOT: " + root);
         for (File file : root.listFiles()) {
             if (file.isDirectory()) {
                 for (File childFile : file.listFiles()) {
                     printChildren(childFile);
                 }
             } else {
-                log.debug("FILE_NAME: " + file.getName());
+                getLog().debug("FILE_NAME: " + file.getName());
             }
         }
+    }
+
+    public Log getLog() {
+        return log;
     }
 }
