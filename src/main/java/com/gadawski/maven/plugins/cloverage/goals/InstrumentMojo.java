@@ -46,11 +46,11 @@ public class InstrumentMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException {
 
         ClassLoaderUtil.setContextClassLoader(project);
-//        clojureExecutor = new ClojureExecutorImpl(getLog());
 
         List<String> clojureProjectNamespaces = 
                 NamespaceUtil.getClojureNamespaces(clojureTestSourceDirectory, clojureSourceDirectory);
         if (!clojureProjectNamespaces.isEmpty() && clojureExecutor != null) {
+            getLog().debug(clojureExecutor.toString());
             clojureExecutor.executeCloverageInvoker(clojureProjectNamespaces);
         }
     }

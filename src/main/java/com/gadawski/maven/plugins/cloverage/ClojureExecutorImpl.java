@@ -6,9 +6,9 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.logging.Logger;
 
 import clojure.java.api.Clojure;
 import clojure.lang.IFn;
@@ -36,15 +36,11 @@ public class ClojureExecutorImpl implements ClojureExecutor {
     private static final Object FIND_NAMESPACES_IN_DIR_FUN = "find-namespaces-in-dir-string";
 
     @Requirement
-    private Log log;
+    private Logger log;
 
     public ClojureExecutorImpl() {
         // empty
     }
-
-//    public ClojureExecutorImpl(Log log) {
-//        this.log = log;
-//    }
 
     @Override
     public void executeCloverageInvoker(List<String> params) {
@@ -119,7 +115,7 @@ public class ClojureExecutorImpl implements ClojureExecutor {
         }
     }
 
-    public Log getLog() {
+    public Logger getLog() {
         return log;
     }
 }
