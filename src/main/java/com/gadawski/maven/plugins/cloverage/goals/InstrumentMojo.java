@@ -23,13 +23,15 @@ import com.gadawski.maven.plugins.cloverage.util.NamespaceUtil;
 @Mojo(name = "instrument", aggregator = false, requiresProject = true, threadSafe = true)
 public class InstrumentMojo extends AbstractMojo {
 
+    private static final String NOT_FOUND_ANY_NAMESPACES_INFO = "Not found any namespaces!";
+
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject project;
 
-    @Parameter
+    @Parameter(defaultValue="src/main/clojure")
     private File clojureSourceDirectory;
 
-    @Parameter
+    @Parameter(defaultValue="src/test/clojure")
     private File clojureTestSourceDirectory;
 
     /**
@@ -44,14 +46,15 @@ public class InstrumentMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
-
         ClassLoaderUtil.setContextClassLoader(project);
 
         List<String> clojureProjectNamespaces = 
                 NamespaceUtil.getClojureNamespaces(clojureTestSourceDirectory, clojureSourceDirectory);
-        if (!clojureProjectNamespaces.isEmpty() && clojureExecutor != null) {
-            getLog().debug(clojureExecutor.toString());
+        getLog().debug("clojureProjectNamespaces: " + clojureProjectNamespaces);
+        if (!clojureProjectNamespaces.isEmpty()) {
             clojureExecutor.executeCloverageInvoker(clojureProjectNamespaces);
+        } else {
+            getLog().info(NOT_FOUND_ANY_NAMESPACES_INFO);
         }
     }
 }
