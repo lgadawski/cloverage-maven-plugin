@@ -14,7 +14,8 @@ import org.apache.maven.project.MavenProject;
 import com.google.common.collect.Sets;
 
 /**
- * @author l.gadawski@gmail.com
+ * 
+ * @link http://stackoverflow.com/a/16263473/1024079
  *
  */
 public final class ClassLoaderUtil {
@@ -31,22 +32,26 @@ public final class ClassLoaderUtil {
     @SuppressWarnings("unchecked")
     public static final void setContextClassLoader(MavenProject project) throws MojoExecutionException {
         Set<URL> urls = Sets.newHashSet();
-        List<String> elements;
         try {
-            elements = project.getTestClasspathElements();
-            // getRuntimeClasspathElements()
-            // getCompileClasspathElements()
-            // getSystemClasspathElements()
-            for (String element : elements) {
-                urls.add(new File(element).toURI().toURL());
-            }
-            ClassLoader contextClassLoader = URLClassLoader.newInstance(urls.toArray(new URL[0]), 
-                    Thread.currentThread().getContextClassLoader());
+            addClasspathElements(urls, project.getTestClasspathElements());
+            addClasspathElements(urls, project.getRuntimeClasspathElements());
+            addClasspathElements(urls, project.getCompileClasspathElements());
+            addClasspathElements(urls, project.getSystemClasspathElements());
+
+            ClassLoader contextClassLoader = URLClassLoader.newInstance(urls.toArray(new URL[0]), Thread
+                    .currentThread().getContextClassLoader());
 
             Thread.currentThread().setContextClassLoader(contextClassLoader);
         } catch (DependencyResolutionRequiredException | MalformedURLException e) {
             e.printStackTrace();
             throw new MojoExecutionException("Problem while setting context ClassLoader!");
+        }
+    }
+
+    private static void addClasspathElements(Set<URL> urls, List<String> classpathElements)
+            throws DependencyResolutionRequiredException, MalformedURLException {
+        for (String element : classpathElements) {
+            urls.add(new File(element).toURI().toURL());
         }
     }
 }
