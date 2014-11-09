@@ -39,6 +39,9 @@ __Warning__, additionally `<build>` tags must contain following `<resources>` ta
 </build>
 ...
 ```
+Usage
+----------------------
+Execute: `mvn cloverage:instrument`
 
 License
 ======================
