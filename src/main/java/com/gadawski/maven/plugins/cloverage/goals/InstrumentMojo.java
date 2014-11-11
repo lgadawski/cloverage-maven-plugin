@@ -8,6 +8,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
 import com.gadawski.maven.plugins.cloverage.ClojureExecutor;
@@ -20,7 +21,9 @@ import com.gadawski.maven.plugins.cloverage.util.NamespaceUtil;
  * @author l.gadawski@gmail.com
  *
  */
-@Mojo(name = "instrument", aggregator = false, requiresProject = true, threadSafe = true)
+//,configurator = "include-project-dependencies", requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME
+@Mojo(name = "instrument", aggregator = false, requiresProject = true, threadSafe = true,
+requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME)
 public class InstrumentMojo extends AbstractMojo {
 
     private static final String NOT_FOUND_ANY_NAMESPACES_INFO = "Not found any namespaces!";
@@ -46,7 +49,7 @@ public class InstrumentMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
-        ClassLoaderUtil.setContextClassLoader(project);
+        ClassLoaderUtil.setContextClassLoader(project, getLog());
 
         List<String> clojureProjectNamespaces = 
                 NamespaceUtil.getClojureNamespaces(clojureTestSourceDirectory, clojureSourceDirectory);
@@ -57,4 +60,5 @@ public class InstrumentMojo extends AbstractMojo {
             getLog().info(NOT_FOUND_ANY_NAMESPACES_INFO);
         }
     }
+
 }

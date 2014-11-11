@@ -19,14 +19,6 @@ public interface ClojureExecutor {
     void executeCloverageInvoker(List<String> params);
 
     /**
-     * Executes cloverage.coverage
-     * 
-     * @param params
-     */
-    @Deprecated
-    void executeCloverage(String... params);
-
-    /**
      * 
      */
     void getClasspath();
@@ -38,4 +30,5 @@ public interface ClojureExecutor {
      * @return
      */
     Object executeFindNamespacesInDir(File sourceDirectory);
+
 }
