@@ -41,7 +41,10 @@ __Warning__, all project dependencies must have `compile` scope. Additionally `<
 ```
 Usage
 ----------------------
-Execute: `mvn cloverage:instrument`
+- html report: `mvn cloverage:html`
+- text report: `mvn cloverage:text`
+- Emma XML: `mvn cloverage:emma-xml`
+
 
 License
 ======================
