@@ -1,9 +1,11 @@
 package com.gadawski.maven.plugins.cloverage.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Set;
 
@@ -20,6 +22,8 @@ import com.google.common.collect.Sets;
  *
  */
 public final class ClassLoaderUtil {
+
+    private static final String LOADER_ERROR_MSG = "Problem while setting context class loader!!";
 
     // prevent instantiation
     private ClassLoaderUtil() {
@@ -41,7 +45,7 @@ public final class ClassLoaderUtil {
             addClasspathElements(urls, project.getCompileClasspathElements(), log);
             addClasspathElements(urls, project.getSystemClasspathElements(), log);
         } catch (MalformedURLException | DependencyResolutionRequiredException e) {
-            System.out.println("Problem while setting context class loader!!");
+            log.error(LOADER_ERROR_MSG);
             e.printStackTrace();
         }
 
@@ -53,11 +57,43 @@ public final class ClassLoaderUtil {
 
     private static void addClasspathElements(Set<URL> urls, List<String> classpathElements, Log log)
             throws MalformedURLException {
-        log.info("######################################## adding deps to classpath");
+        log.debug("######################################## adding deps to classpath");
         for (String element : classpathElements) {
-            log.info("adding classpath element: " + element);
+            log.debug("adding classpath element: " + element);
             urls.add(new File(element).toURI().toURL());
         }
-        log.info("######################################## ");
+        log.debug("######################################## ");
+    }
+
+    public void getClasspath(Log log) {
+        log.debug("GET CLASSPATH");
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        Enumeration<URL> roots = null;
+        try {
+            roots = classLoader.getResources("");
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error("Error reading resource!");
+            return;
+        }
+        while (roots.hasMoreElements()) {
+            URL url = (URL) roots.nextElement();
+            log.debug("URL: " + url);
+            File root = new File(url.getPath());
+            printChildren(root, log);
+        }
+    }
+
+    private void printChildren(File root, Log log) {
+        log.debug("ROOT: " + root);
+        for (File file : root.listFiles()) {
+            if (file.isDirectory()) {
+                for (File childFile : file.listFiles()) {
+                    printChildren(childFile, log);
+                }
+            } else {
+                log.debug("FILE_NAME: " + file.getName());
+            }
+        }
     }
 }

@@ -19,11 +19,6 @@ public interface ClojureExecutor {
     void executeCloverageInvoker(List<String> params);
 
     /**
-     * 
-     */
-    void getClasspath();
-
-    /**
      * Executed tools.namespaces.find-namespace-in-dir
      * 
      * @param sourceDirectory

@@ -2,8 +2,6 @@ package com.gadawski.maven.plugins.cloverage;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.Enumeration;
 import java.util.List;
 
 import org.codehaus.plexus.component.annotations.Component;
@@ -62,39 +60,6 @@ public class ClojureExecutorImpl implements ClojureExecutor {
         }
         IFn findNamespaceInDir = Clojure.var(CLOJURE_INVOKER_NS, FIND_NAMESPACES_IN_DIR_FUN);
         return findNamespaceInDir.invoke(directory);
-    }
-
-    @Override
-    public void getClasspath() {
-        getLog().debug("GET CLASSPATH");
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        Enumeration<URL> roots = null;
-        try {
-            roots = classLoader.getResources("");
-        } catch (IOException e) {
-            e.printStackTrace();
-            getLog().error(READING_CLJ_EXCEPTION_MSG);
-            return;
-        }
-        while (roots.hasMoreElements()) {
-            URL url = (URL) roots.nextElement();
-            getLog().debug("URL: " + url);
-            File root = new File(url.getPath());
-            printChildren(root);
-        }
-    }
-
-    private void printChildren(File root) {
-        getLog().debug("ROOT: " + root);
-        for (File file : root.listFiles()) {
-            if (file.isDirectory()) {
-                for (File childFile : file.listFiles()) {
-                    printChildren(childFile);
-                }
-            } else {
-                getLog().debug("FILE_NAME: " + file.getName());
-            }
-        }
     }
 
     public Logger getLog() {
