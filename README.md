@@ -21,7 +21,7 @@ Configuration
 
 When configuration is empty default source directory is `src/main/clojure` and test source directory `src/test/clojure`
 
-__Warning__, all project dependencies must have `compile` scope. Additionally `<build>` tags must contain following `<resources>` tags:
+__Warning__ `<build>` tags must contain following `<resources>` tags:
 
 ```
 ...
