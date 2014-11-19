@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Executor for cloverage library for instrumenting clojure code.
+ * Executor for cloverage library for processing clojure code with cloverage library.
  * 
  * @author l.gadawski@gmail.com
  *

@@ -7,14 +7,13 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
 /**
- * Instrument mojo that produces html report.
+ * Evaluate code coverage to html report.
  * 
  * @author l.gadawski@gmail.com
  *
  */
-@Mojo(name = "html", aggregator = false, requiresProject = true, threadSafe = true,
-requiresDependencyResolution = ResolutionScope.TEST)
-public class HtmlMojo extends AbstractInstrumentMojo {
+@Mojo(name = "html", threadSafe = true, requiresDependencyResolution = ResolutionScope.TEST)
+public class HtmlMojo extends AbstractCloverageMojo {
 
     public HtmlMojo() {
         // empty

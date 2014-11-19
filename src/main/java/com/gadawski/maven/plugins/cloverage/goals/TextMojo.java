@@ -7,14 +7,13 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
 /**
- * Instrument mojo that produces text report.
+ * Evaluate code coverage to text report.
  * 
  * @author l.gadawski@gmail.com
  *
  */
-@Mojo(name = "text", aggregator = false, requiresProject = true, threadSafe = true,
-requiresDependencyResolution = ResolutionScope.TEST)
-public class TextMojo extends AbstractInstrumentMojo {
+@Mojo(name = "text", threadSafe = true, requiresDependencyResolution = ResolutionScope.TEST)
+public class TextMojo extends AbstractCloverageMojo {
 
     public TextMojo() {
         // empty

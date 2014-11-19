@@ -21,7 +21,7 @@ public class NamespaceUtil {
     }
 
     /**
-     * Gather instrumenting project clojure namespaces.
+     * Gather clojure project namespaces.
      * 
      * @param sourceDirectory
      *            - project resources

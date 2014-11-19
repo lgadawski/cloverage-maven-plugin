@@ -14,12 +14,12 @@ import com.gadawski.maven.plugins.cloverage.util.ClassLoaderUtil;
 import com.gadawski.maven.plugins.cloverage.util.NamespaceUtil;
 
 /**
- * Abstract cloverage-maven-plugin mojo that performs clojure files Instrumentation.
+ * Abstract cloverage-maven-plugin mojo that process clojure sources with cloverage lib to get Clojure code coverage.
  * 
  * @author l.gadawski@gmail.com
  *
  */
-public abstract class AbstractInstrumentMojo extends AbstractMojo {
+public abstract class AbstractCloverageMojo extends AbstractMojo {
 
     private static final String NOT_FOUND_ANY_NAMESPACES_INFO = "Not found any namespaces!";
 
