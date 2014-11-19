@@ -13,7 +13,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
  *
  */
 @Mojo(name = "text", aggregator = false, requiresProject = true, threadSafe = true,
-requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME)
+requiresDependencyResolution = ResolutionScope.TEST)
 public class TextMojo extends AbstractInstrumentMojo {
 
     public TextMojo() {

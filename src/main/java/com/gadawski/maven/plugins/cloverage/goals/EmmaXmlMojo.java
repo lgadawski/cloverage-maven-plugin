@@ -13,7 +13,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
  *
  */
 @Mojo(name = "emma-xml", aggregator = false, requiresProject = true, threadSafe = true,
-requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME)
+requiresDependencyResolution = ResolutionScope.TEST)
 public class EmmaXmlMojo extends AbstractInstrumentMojo {
 
     public EmmaXmlMojo() {
