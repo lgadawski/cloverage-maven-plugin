@@ -1,10 +1,12 @@
 package com.gadawski.maven.plugins.cloverage.goals;
 
 import java.util.Arrays;
+import java.util.Locale;
 
-import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.apache.maven.reporting.MavenReportException;
 
 /**
  * Evaluate code coverage to text report.
@@ -12,7 +14,8 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
  * @author l.gadawski@gmail.com
  *
  */
-@Mojo(name = "text", threadSafe = true, requiresDependencyResolution = ResolutionScope.TEST)
+@Mojo(name = "text", threadSafe = true, requiresDependencyResolution = ResolutionScope.TEST, 
+        defaultPhase = LifecyclePhase.SITE)
 public class TextMojo extends AbstractCloverageMojo {
 
     public TextMojo() {
@@ -20,8 +23,8 @@ public class TextMojo extends AbstractCloverageMojo {
     }
 
     @Override
-    public void execute() throws MojoExecutionException {
-        super.execute();
+    protected void executeReport(Locale arg0) throws MavenReportException {
+        super.executeReport(arg0);
         executeCloverage(Arrays.asList("--text"));
     }
 }
