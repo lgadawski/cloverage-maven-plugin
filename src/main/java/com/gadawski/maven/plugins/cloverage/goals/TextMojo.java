@@ -24,6 +24,7 @@ public class TextMojo extends AbstractCloverageMojo {
 
     @Override
     protected void executeReport(Locale arg0) throws MavenReportException {
+        getLog().info("TEXT!!");
         super.executeReport(arg0);
         executeCloverage(Arrays.asList("--text"));
     }

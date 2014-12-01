@@ -4,7 +4,10 @@ import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.SinkFactory;
 import org.apache.maven.doxia.siterenderer.Renderer;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
@@ -16,7 +19,8 @@ import com.gadawski.maven.plugins.cloverage.util.ClassLoaderUtil;
 import com.gadawski.maven.plugins.cloverage.util.NamespaceUtil;
 
 /**
- * Abstract cloverage-maven-plugin mojo that process clojure sources with cloverage lib to get Clojure code coverage.
+ * Abstract cloverage-maven-plugin mojo that process clojure sources with
+ * cloverage lib to get Clojure code coverage.
  * 
  * @author l.gadawski@gmail.com
  *
@@ -27,15 +31,17 @@ public abstract class AbstractCloverageMojo extends AbstractMavenReport {
     private static final String CLOVERAGE_REPORT_NAME = "Cloverage Report";
     private static final String OUTPUT_NAME = "indexx";
     private static final String CLOVERAGE_REPORT_DESCRIPTION = "Clojure code coverage report.";
-    private static final String OUTPUT_DIRECTORY = "cloverage";
+
+    @Parameter(defaultValue = "${basedir}/target/coverage")
+    protected File reportOutputDirectory;
 
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     protected MavenProject project;
 
-    @Parameter(defaultValue="src/main/clojure")
+    @Parameter(defaultValue = "src/main/clojure")
     protected File clojureSourceDirectory;
 
-    @Parameter(defaultValue="src/test/clojure")
+    @Parameter(defaultValue = "src/test/clojure")
     protected File clojureTestSourceDirectory;
 
     /**
@@ -65,12 +71,22 @@ public abstract class AbstractCloverageMojo extends AbstractMavenReport {
     @Override
     protected void executeReport(Locale arg0) throws MavenReportException {
         ClassLoaderUtil.setContextClassLoader(project, getLog());
-        getSink().anchor("www.google.pl");
     }
 
     @Override
+    public void execute() throws MojoExecutionException {
+        getLog().info("Execute!");
+        super.execute();
+    }
+    
+    @Override
+    public void generate(Sink aSink, SinkFactory aSinkFactory, Locale aLocale) throws MavenReportException {
+        getLog().info("Generate!");
+        super.generate(aSink, aSinkFactory, aLocale);
+    }
+    @Override
     protected String getOutputDirectory() {
-        return OUTPUT_DIRECTORY;
+        return reportOutputDirectory.getAbsolutePath();
     }
 
     @Override
@@ -83,14 +99,19 @@ public abstract class AbstractCloverageMojo extends AbstractMavenReport {
         return siteRenderer;
     }
 
+    @Override
+    public boolean isExternalReport() {
+        return true;
+    }
+
     /**
      * Executes cloverage library with given params.
      * 
      * @param params
      */
     protected void executeCloverage(List<String> params) {
-        List<String> clojureProjectNamespaces = 
-                NamespaceUtil.getClojureNamespaces(clojureTestSourceDirectory, clojureSourceDirectory);
+        List<String> clojureProjectNamespaces = NamespaceUtil.getClojureNamespaces(clojureTestSourceDirectory,
+                clojureSourceDirectory);
         if (!clojureProjectNamespaces.isEmpty()) {
             // add parameters
             clojureProjectNamespaces.addAll(params);

@@ -24,7 +24,8 @@ public class EmmaXmlMojo extends AbstractCloverageMojo {
 
     @Override
     protected void executeReport(Locale arg0) throws MavenReportException {
+        getLog().info("EMMA-XML!!");
         super.executeReport(arg0);
-        executeCloverage(Arrays.asList("--text"));
+        executeCloverage(Arrays.asList("--emma-xml"));
     }
 }

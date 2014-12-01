@@ -10,6 +10,7 @@
 	</reflowSkin>
   </custom>
   <body>
-    <menu ref="reports" />
+    <menu ref="reports">
+    </menu>
   </body>
 </project>

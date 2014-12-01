@@ -24,6 +24,7 @@ public class HtmlMojo extends AbstractCloverageMojo {
 
     @Override
     protected void executeReport(Locale arg0) throws MavenReportException {
+        getLog().info("HTML!!");
         super.executeReport(arg0);
         executeCloverage(Arrays.asList("--html"));
     }
