@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.maven.doxia.siterenderer.Renderer;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
@@ -81,6 +82,13 @@ public abstract class AbstractCloverageMojo extends AbstractMavenReport {
             cloverageArgs.add("-o");
             cloverageArgs.add(getOutputDirectory());
         }
+    }
+
+    @Override
+    public void execute() throws MojoExecutionException {
+        // generate report in default location
+        setOutputDirectory("");
+        super.execute();
     }
 
     @Override
