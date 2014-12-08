@@ -1,6 +1,5 @@
 package com.gadawski.maven.plugins.cloverage.goals;
 
-import java.util.Arrays;
 import java.util.Locale;
 
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -9,7 +8,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.reporting.MavenReportException;
 
 /**
- * Evaluate code coverage to text report.
+ * Evaluate clojure code coverage to text report.
  * 
  * @author l.gadawski@gmail.com
  *
@@ -24,8 +23,9 @@ public class TextMojo extends AbstractCloverageMojo {
 
     @Override
     protected void executeReport(Locale arg0) throws MavenReportException {
-        getLog().info("TEXT!!");
         super.executeReport(arg0);
-        executeCloverage(Arrays.asList("--text"));
+
+        cloverageArgs.add("--text");
+        executeCloverage(cloverageArgs);
     }
 }

@@ -4,10 +4,8 @@ import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.doxia.siterenderer.Renderer;
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
@@ -17,6 +15,7 @@ import org.apache.maven.reporting.MavenReportException;
 import com.gadawski.maven.plugins.cloverage.ClojureExecutor;
 import com.gadawski.maven.plugins.cloverage.util.ClassLoaderUtil;
 import com.gadawski.maven.plugins.cloverage.util.NamespaceUtil;
+import com.google.common.collect.Lists;
 
 /**
  * Abstract cloverage-maven-plugin mojo that process clojure sources with
@@ -29,10 +28,16 @@ public abstract class AbstractCloverageMojo extends AbstractMavenReport {
 
     private static final String NOT_FOUND_ANY_NAMESPACES_INFO = "Not found any namespaces!";
     private static final String CLOVERAGE_REPORT_NAME = "Cloverage Report";
-    private static final String OUTPUT_NAME = "indexx";
+    private static final String OUTPUT_NAME = "coverage/index";
     private static final String CLOVERAGE_REPORT_DESCRIPTION = "Clojure code coverage report.";
 
-    @Parameter(defaultValue = "${basedir}/target/coverage")
+    /** Args for cloverage invoke. */
+    protected List<String> cloverageArgs = Lists.newArrayList();
+
+    @Parameter(defaultValue = "${project.reporting.outputDirectory}/coverage")
+    protected String outputDirectory;
+
+    @Parameter(defaultValue = "${project.reporting.outputDirectory}/coverage")
     protected File reportOutputDirectory;
 
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
@@ -71,22 +76,20 @@ public abstract class AbstractCloverageMojo extends AbstractMavenReport {
     @Override
     protected void executeReport(Locale arg0) throws MavenReportException {
         ClassLoaderUtil.setContextClassLoader(project, getLog());
+
+        if (StringUtils.isNotBlank(getOutputDirectory())) {
+            cloverageArgs.add("-o");
+            cloverageArgs.add(getOutputDirectory());
+        }
     }
 
     @Override
-    public void execute() throws MojoExecutionException {
-        getLog().info("Execute!");
-        super.execute();
+    protected String getOutputDirectory() {
+        return outputDirectory;
     }
     
-    @Override
-    public void generate(Sink aSink, SinkFactory aSinkFactory, Locale aLocale) throws MavenReportException {
-        getLog().info("Generate!");
-        super.generate(aSink, aSinkFactory, aLocale);
-    }
-    @Override
-    protected String getOutputDirectory() {
-        return reportOutputDirectory.getAbsolutePath();
+    protected void setOutputDirectory(String outputDirectory) {
+    	this.outputDirectory = outputDirectory;
     }
 
     @Override
