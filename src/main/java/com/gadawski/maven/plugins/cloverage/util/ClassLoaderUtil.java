@@ -18,7 +18,7 @@ import com.google.common.collect.Sets;
 
 /**
  * 
- * @link http://stackoverflow.com/a/16263473/1024079
+ * @link Implemented based on http://stackoverflow.com/a/16263473/1024079
  *
  */
 public final class ClassLoaderUtil {
